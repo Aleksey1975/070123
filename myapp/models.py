@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 
-# Товар для нашей витрины
+
 class Product(models.Model):
     name = models.CharField(
         max_length=50,
@@ -12,11 +12,11 @@ class Product(models.Model):
     quantity = models.IntegerField(
         validators=[MinValueValidator(0)],
     )
-    # поле категории будет ссылаться на модель категории
+
     category = models.ForeignKey(
         to='Category',
         on_delete=models.CASCADE,
-        related_name='products',  # все продукты в категории будут доступны через поле products
+        related_name='products',
     )
     price = models.FloatField(
         validators=[MinValueValidator(0.0)],
@@ -26,15 +26,12 @@ class Product(models.Model):
         return f'{self.name.title()}: {self.description[:20]}'
 
 
-# Категория, к которой будет привязываться товар
+
 class Category(models.Model):
-    # названия категорий тоже не должны повторяться
+
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name.title()
 
 
-from django.db import models
-
-# Create your models here.
